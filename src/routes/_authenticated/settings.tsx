@@ -16,7 +16,6 @@ function SettingsPage() {
     premoves_enabled: true,
     sounds_enabled: true,
     show_legal_moves: true,
-    auto_queen: true,
   });
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -29,7 +28,6 @@ function SettingsPage() {
         premoves_enabled: profile.premoves_enabled ?? true,
         sounds_enabled: profile.sounds_enabled ?? true,
         show_legal_moves: profile.show_legal_moves ?? true,
-        auto_queen: profile.auto_queen ?? true,
       });
     }
   }, [profile]);
@@ -45,7 +43,6 @@ function SettingsPage() {
         premoves_enabled: form.premoves_enabled,
         sounds_enabled: form.sounds_enabled,
         show_legal_moves: form.show_legal_moves,
-        auto_queen: form.auto_queen,
       })
       .eq("id", profile.id);
     setSaving(false);
@@ -100,14 +97,9 @@ function SettingsPage() {
             onChange={(v) => setForm({ ...form, sounds_enabled: v })}
           />
           <Toggle
-            label="Показывать легальные ходы"
+            label="Показывать возможные ходы"
             value={form.show_legal_moves}
             onChange={(v) => setForm({ ...form, show_legal_moves: v })}
-          />
-          <Toggle
-            label="Авто-превращение в ферзя"
-            value={form.auto_queen}
-            onChange={(v) => setForm({ ...form, auto_queen: v })}
           />
           <button onClick={save} disabled={saving} className="btn-primary w-full">
             {saving ? "Сохраняем…" : saved ? "✓ Сохранено" : "Сохранить"}
