@@ -320,8 +320,9 @@ function PlayAI() {
     setTimeout(() => setFlagTooltip((c) => (c === who ? null : c)), 1800);
   };
 
-  const squareStyles = buildSquareStyles(
-    selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark,
+  const squareStyles = useMemo(
+    () => buildSquareStyles(selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark),
+    [selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark],
   );
 
   const chessboardOptions = useMemo(
@@ -334,7 +335,7 @@ function PlayAI() {
       lightSquareStyle: { backgroundColor: theme.light },
       darkSquareStyle: { backgroundColor: theme.dark },
       allowDragging: !finished && !thinking,
-      animationDurationInMs: 200,
+      animationDurationInMs: 120,
     }),
     [fen, onPieceDrop, onSquareClick, squareStyles, theme.light, theme.dark, finished, thinking],
   );
