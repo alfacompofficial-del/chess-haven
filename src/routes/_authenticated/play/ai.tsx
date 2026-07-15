@@ -343,7 +343,7 @@ function PlayAI() {
       lightSquareStyle: { backgroundColor: theme.light },
       darkSquareStyle: { backgroundColor: theme.dark },
       allowDragging: !finished && !thinking,
-      animationDurationInMs: 120,
+      animationDurationInMs: 50,
     }),
     [fen, onPieceDrop, onSquareClick, squareStyles, theme.light, theme.dark, finished, thinking],
   );
