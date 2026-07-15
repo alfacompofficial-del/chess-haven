@@ -279,7 +279,7 @@ function PlayAI() {
         const piece = game.get(square as Parameters<typeof game.get>[0]);
         if (piece && piece.color === playerColor) {
           setPremoveSq(square);
-          const tentative = game.moves({ square: square as Parameters<typeof game.moves>[0], verbose: true });
+          const tentative = game.moves({ square: square as Square, verbose: true });
           setPremoveTargets(tentative.map((m) => m.to));
         }
       }
@@ -298,7 +298,7 @@ function PlayAI() {
         const piece = game.get(square as Parameters<typeof game.get>[0]);
         if (piece && piece.color === playerColor) {
           setSelectedSq(square);
-          const moves = game.moves({ square: square as Parameters<typeof game.moves>[0], verbose: true });
+          const moves = game.moves({ square: square as Square, verbose: true });
           setLegalTargets(moves.map((m) => m.to));
         } else if (!promotionMove) {
           setSelectedSq(null);
@@ -309,7 +309,7 @@ function PlayAI() {
       const piece = game.get(square as Parameters<typeof game.get>[0]);
       if (piece && piece.color === playerColor) {
         setSelectedSq(square);
-        const moves = game.moves({ square: square as Parameters<typeof game.moves>[0], verbose: true });
+        const moves = game.moves({ square: square as Square, verbose: true });
         setLegalTargets(moves.map((m) => m.to));
       }
     }
