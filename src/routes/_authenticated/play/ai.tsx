@@ -36,6 +36,7 @@ function fmt(sec: number) {
 
 /** Dot-style highlights for legal moves, selected square and premove squares */
 function buildSquareStyles(
+  game:           Chess,
   selectedSq:     string | null,
   legalTargets:   string[],
   premoveSq:      string | null,
@@ -50,13 +51,20 @@ function buildSquareStyles(
   }
 
   for (const sq of legalTargets) {
-    const file = sq.charCodeAt(0) - 97;
-    const rank = parseInt(sq[1]) - 1;
-    const isLight = (file + rank) % 2 === 0;
-    styles[sq] = {
-      background: `radial-gradient(circle, rgba(0,0,0,0.2) 15%, transparent 16%)`,
-      cursor: "pointer",
-    };
+    const target = game.get(sq as Square);
+    if (target) {
+      // Capture: ring around the piece so it's visible over the piece sprite
+      styles[sq] = {
+        background: "radial-gradient(circle, transparent 58%, rgba(220,40,40,0.55) 60%, rgba(220,40,40,0.55) 72%, transparent 74%)",
+        cursor: "pointer",
+      };
+    } else {
+      // Quiet move: small dot
+      styles[sq] = {
+        background: "radial-gradient(circle, rgba(0,0,0,0.28) 18%, transparent 20%)",
+        cursor: "pointer",
+      };
+    }
   }
 
   if (premoveSq) {
@@ -321,8 +329,8 @@ function PlayAI() {
   };
 
   const squareStyles = useMemo(
-    () => buildSquareStyles(selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark),
-    [selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark],
+    () => buildSquareStyles(game, selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark),
+    [game, fen, selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark],
   );
 
   const chessboardOptions = useMemo(
@@ -335,7 +343,7 @@ function PlayAI() {
       lightSquareStyle: { backgroundColor: theme.light },
       darkSquareStyle: { backgroundColor: theme.dark },
       allowDragging: !finished && !thinking,
-      animationDurationInMs: 120,
+      animationDurationInMs: 50,
     }),
     [fen, onPieceDrop, onSquareClick, squareStyles, theme.light, theme.dark, finished, thinking],
   );
