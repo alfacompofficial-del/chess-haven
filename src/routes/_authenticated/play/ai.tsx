@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import { Chess } from "chess.js";
+import { Chess, type Square } from "chess.js";
 import { Chessboard } from "react-chessboard";
 import { z } from "zod";
 import { useAuth } from "@/hooks/use-auth";
@@ -279,7 +279,7 @@ function PlayAI() {
         const piece = game.get(square as Parameters<typeof game.get>[0]);
         if (piece && piece.color === playerColor) {
           setPremoveSq(square);
-          const tentative = game.moves({ square: square as Parameters<typeof game.moves>[0], verbose: true });
+          const tentative = game.moves({ square: square as Square, verbose: true });
           setPremoveTargets(tentative.map((m) => m.to));
         }
       }
@@ -298,7 +298,7 @@ function PlayAI() {
         const piece = game.get(square as Parameters<typeof game.get>[0]);
         if (piece && piece.color === playerColor) {
           setSelectedSq(square);
-          const moves = game.moves({ square: square as Parameters<typeof game.moves>[0], verbose: true });
+          const moves = game.moves({ square: square as Square, verbose: true });
           setLegalTargets(moves.map((m) => m.to));
         } else if (!promotionMove) {
           setSelectedSq(null);
@@ -309,7 +309,7 @@ function PlayAI() {
       const piece = game.get(square as Parameters<typeof game.get>[0]);
       if (piece && piece.color === playerColor) {
         setSelectedSq(square);
-        const moves = game.moves({ square: square as Parameters<typeof game.moves>[0], verbose: true });
+        const moves = game.moves({ square: square as Square, verbose: true });
         setLegalTargets(moves.map((m) => m.to));
       }
     }
@@ -320,8 +320,9 @@ function PlayAI() {
     setTimeout(() => setFlagTooltip((c) => (c === who ? null : c)), 1800);
   };
 
-  const squareStyles = buildSquareStyles(
-    selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark,
+  const squareStyles = useMemo(
+    () => buildSquareStyles(selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark),
+    [selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark],
   );
 
   const chessboardOptions = useMemo(
@@ -334,7 +335,7 @@ function PlayAI() {
       lightSquareStyle: { backgroundColor: theme.light },
       darkSquareStyle: { backgroundColor: theme.dark },
       allowDragging: !finished && !thinking,
-      animationDurationInMs: 200,
+      animationDurationInMs: 120,
     }),
     [fen, onPieceDrop, onSquareClick, squareStyles, theme.light, theme.dark, finished, thinking],
   );
