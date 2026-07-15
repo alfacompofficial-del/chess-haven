@@ -77,16 +77,6 @@ function buildSquareStyles(
   return styles;
 }
 
-  if (premoveSq) {
-    styles[premoveSq] = { backgroundColor: "rgba(100, 120, 255, 0.55)" };
-  }
-  for (const sq of premoveTargets) {
-    styles[sq] = { backgroundColor: "rgba(100, 120, 255, 0.35)" };
-  }
-
-  return styles;
-}
-
 function PlayAI() {
   const search = Route.useSearch();
   const { profile }  = useAuth();
