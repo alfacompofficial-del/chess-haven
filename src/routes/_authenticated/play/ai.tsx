@@ -329,8 +329,8 @@ function PlayAI() {
   };
 
   const squareStyles = useMemo(
-    () => buildSquareStyles(selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark),
-    [selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark],
+    () => buildSquareStyles(game, selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark),
+    [game, fen, selectedSq, legalTargets, premoveSq, premoveTargets, theme.light, theme.dark],
   );
 
   const chessboardOptions = useMemo(
